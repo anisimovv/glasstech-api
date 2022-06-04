@@ -1,0 +1,42 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Shower {
+  id        String    @id @default(uuid())
+  name      String
+  minPrice  Int
+  maxPrice  Int
+  elements  Element[]
+  binding   Binding   @relation(fields: [bindingId], references: [id])
+  bindingId String
+}
+
+model Element {
+  id           String  @id @default(uuid())
+  title        String
+  minValue     Int
+  maxValue     Int
+  defaultValue Int
+  type         String
+  Shower       Shower? @relation(fields: [showerId], references: [id])
+  showerId     String?
+}
+
+model Glass {
+  id    String @id @default(uuid())
+  name  String
+  price Int
+}
+
+model Binding {
+  id      String   @id @default(uuid())
+  name    String
+  price   Int
+  Showers Shower[]
+}
