@@ -7,8 +7,8 @@ import { UpdateShowerElementInput } from './dto/update-shower-element.input';
 export class ShowerElementsService {
   constructor(private prisma: PrismaService) {}
 
-  create(createShowerElementInput: CreateShowerElementInput) {
-    return 'This action adds a new showerElement';
+  async create(createShowerElementInput: CreateShowerElementInput) {
+    return await this.prisma.element.create({ data: createShowerElementInput });
   }
 
   findAll(args?) {

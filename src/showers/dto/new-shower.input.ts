@@ -1,6 +1,6 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
 import { Length, Min } from 'class-validator';
-import { CreateShowerElementInput } from 'src/shower-elements/dto/create-shower-element.input';
+import { CrateShowerElementWithoutShowerId } from 'src/shower-elements/dto/create-shower-element-without-showerId';
 
 @InputType()
 export class NewShowerInput {
@@ -16,6 +16,8 @@ export class NewShowerInput {
   @Min(0)
   maxPrice: number;
 
-  @Field(() => [CreateShowerElementInput], { nullable: true })
-  elements?: [CreateShowerElementInput];
+  @Field(() => [CrateShowerElementWithoutShowerId], {
+    nullable: true,
+  })
+  elements?: [CrateShowerElementWithoutShowerId];
 }

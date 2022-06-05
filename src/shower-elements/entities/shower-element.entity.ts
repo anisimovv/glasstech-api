@@ -1,10 +1,12 @@
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 import { Shower } from 'src/showers/entities/shower.entity';
-
 @ObjectType()
 export class ShowerElement {
   @Field(() => ID)
   id: string;
+
+  @Field(() => Shower)
+  shower: Shower;
 
   @Field()
   title: string;
@@ -20,7 +22,4 @@ export class ShowerElement {
 
   @Field()
   type: string;
-
-  @Field(() => Shower, { nullable: true })
-  shower?: Shower;
 }

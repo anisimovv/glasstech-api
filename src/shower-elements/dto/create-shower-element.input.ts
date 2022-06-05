@@ -3,6 +3,9 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 @InputType()
 export class CreateShowerElementInput {
   @Field()
+  showerId: string;
+
+  @Field()
   title: string;
 
   @Field(() => Int)

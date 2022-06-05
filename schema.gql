@@ -4,12 +4,12 @@
 
 type ShowerElement {
   id: ID!
+  shower: Shower!
   title: String!
   minValue: Int!
   maxValue: Int!
   defaultValue: Int!
   type: String!
-  shower: Shower
 }
 
 type Shower {
@@ -47,10 +47,10 @@ input NewShowerInput {
   name: String!
   minPrice: Int!
   maxPrice: Int!
-  elements: [CreateShowerElementInput!]
+  elements: [CrateShowerElementWithoutShowerId!]
 }
 
-input CreateShowerElementInput {
+input CrateShowerElementWithoutShowerId {
   title: String!
   minValue: Int!
   maxValue: Int!
@@ -65,7 +65,17 @@ input EditShowerInput {
   id: String!
 }
 
+input CreateShowerElementInput {
+  showerId: String!
+  title: String!
+  minValue: Int!
+  maxValue: Int!
+  defaultValue: Int!
+  type: String!
+}
+
 input UpdateShowerElementInput {
+  showerId: String
   title: String
   minValue: Int
   maxValue: Int
