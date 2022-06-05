@@ -6,19 +6,19 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
+
 import { ShowersService } from './showers.service';
-import { Shower } from './entities/shower.entity';
+import { ShowerElementsService } from 'src/shower-elements/shower-elements.service';
+
 import { NewShowerInput } from './dto/new-shower.input';
 import { EditShowerInput } from './dto/edit-shower.input';
-import { ShowerElementsService } from 'src/shower-elements/shower-elements.service';
-import { PrismaService } from 'src/prisma.service';
 
+import { Shower } from './entities/shower.entity';
 @Resolver(() => Shower)
 export class ShowersResolver {
   constructor(
     private readonly showersService: ShowersService,
     private readonly showerElemetsService: ShowerElementsService,
-    private readonly prisma: PrismaService,
   ) {}
 
   @Mutation(() => Shower)
@@ -32,8 +32,8 @@ export class ShowersResolver {
   }
 
   @Query(() => Shower, { name: 'shower' })
-  findOne(@Args('id') id: string) {
-    return this.prisma.shower.findUnique({ where: { id } });
+  indOne(@Args('id') id: string) {
+    return this.showersService.findOne(id);
   }
 
   @Mutation(() => Shower)
@@ -42,12 +42,12 @@ export class ShowersResolver {
   }
 
   @Mutation(() => Boolean)
-  async removeShower(@Args('id') id: string) {
-    return await this.showersService.remove(id);
+  removeShower(@Args('id') id: string) {
+    return this.showersService.remove(id);
   }
 
   @ResolveField()
-  async elements(@Parent() shower: Shower) {
+  elements(@Parent() shower: Shower) {
     const { id } = shower;
     return this.showerElemetsService.findAll({ showerId: id });
   }

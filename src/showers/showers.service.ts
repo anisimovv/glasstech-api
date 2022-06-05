@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { NewShowerInput } from './dto/new-shower.input';
-import { EditShowerInput } from './dto/edit-shower.input';
-import { Shower } from './entities/shower.entity';
+
 import { PrismaService } from 'src/prisma.service';
 
+import { NewShowerInput } from './dto/new-shower.input';
+import { EditShowerInput } from './dto/edit-shower.input';
+
+import { Shower } from './entities/shower.entity';
 @Injectable()
 export class ShowersService {
   constructor(private prisma: PrismaService) {}
@@ -26,7 +28,6 @@ export class ShowersService {
 
     return await this.prisma.shower.findUnique({
       where: { id: newShower.id },
-      include: { elements: true },
     });
   }
 
@@ -34,12 +35,15 @@ export class ShowersService {
     return await this.prisma.shower.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} shower`;
+  async findOne(id: string) {
+    return await this.prisma.shower.findUnique({ where: { id } });
   }
 
-  update(id: number, updateShowerInput: EditShowerInput) {
-    return `This action updates a #${id} shower`;
+  async update(id: string, updateShowerInput: EditShowerInput) {
+    return await this.prisma.shower.update({
+      where: { id: id },
+      data: { ...updateShowerInput },
+    });
   }
 
   async remove(id: string) {

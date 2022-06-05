@@ -62,8 +62,7 @@ input EditShowerInput {
   name: String
   minPrice: Int
   maxPrice: Int
-  elements: [CreateShowerElementInput!]
-  id: Int!
+  id: String!
 }
 
 input UpdateShowerElementInput {
