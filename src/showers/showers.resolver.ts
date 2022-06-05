@@ -1,12 +1,26 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { ShowersService } from './showers.service';
 import { Shower } from './entities/shower.entity';
 import { NewShowerInput } from './dto/new-shower.input';
 import { EditShowerInput } from './dto/edit-shower.input';
+import { ShowerElementsService } from 'src/shower-elements/shower-elements.service';
+import { PrismaService } from 'src/prisma.service';
 
 @Resolver(() => Shower)
 export class ShowersResolver {
-  constructor(private readonly showersService: ShowersService) {}
+  constructor(
+    private readonly showersService: ShowersService,
+    private readonly showerElemetsService: ShowerElementsService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @Mutation(() => Shower)
   createShower(@Args('createShowerInput') createShowerInput: NewShowerInput) {
@@ -19,8 +33,8 @@ export class ShowersResolver {
   }
 
   @Query(() => Shower, { name: 'shower' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.showersService.findOne(id);
+  findOne(@Args('id') id: string) {
+    return this.prisma.shower.findUnique({ where: { id } });
   }
 
   @Mutation(() => Shower)
@@ -29,7 +43,13 @@ export class ShowersResolver {
   }
 
   @Mutation(() => Shower)
-  removeShower(@Args('id', { type: () => Int }) id: number) {
-    return this.showersService.remove(id);
+  removeShower(@Args('id') id: string) {
+    return this.prisma.shower.delete({ where: { id } });
+  }
+
+  @ResolveField()
+  async elements(@Parent() shower: Shower) {
+    const { id } = shower;
+    return this.showerElemetsService.findAll({ showerId: id });
   }
 }

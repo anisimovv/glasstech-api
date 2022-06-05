@@ -13,30 +13,35 @@ model Shower {
   minPrice  Int
   maxPrice  Int
   elements  Element[]
-  binding   Binding   @relation(fields: [bindingId], references: [id])
-  bindingId String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Element {
-  id           String  @id @default(uuid())
+  id           String   @id @default(uuid())
   title        String
   minValue     Int
   maxValue     Int
   defaultValue Int
   type         String
-  Shower       Shower? @relation(fields: [showerId], references: [id])
+  Shower       Shower?  @relation(fields: [showerId], references: [id])
   showerId     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Glass {
-  id    String @id @default(uuid())
-  name  String
-  price Int
+  id        String   @id @default(uuid())
+  name      String
+  price     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Binding {
-  id      String   @id @default(uuid())
-  name    String
-  price   Int
-  Showers Shower[]
+  id        String   @id @default(uuid())
+  name      String
+  price     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

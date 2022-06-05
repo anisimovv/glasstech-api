@@ -2,33 +2,75 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type ShowerElement {
+  id: ID!
+  title: String!
+  minValue: Int!
+  maxValue: Int!
+  defaultValue: Int!
+  type: String!
+  shower: Shower
+}
+
 type Shower {
   id: ID!
   name: String!
   minPrice: Int!
   maxPrice: Int!
+  elements: [ShowerElement!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Query {
   showers: [Shower!]!
-  shower(id: Int!): Shower!
+  shower(id: String!): Shower!
+  showerElements: [ShowerElement!]!
+  showerElement(id: Int!): ShowerElement!
 }
 
 type Mutation {
   createShower(createShowerInput: NewShowerInput!): Shower!
   updateShower(updateShowerInput: EditShowerInput!): Shower!
-  removeShower(id: Int!): Shower!
+  removeShower(id: String!): Shower!
+  createShowerElement(createShowerElementInput: CreateShowerElementInput!): ShowerElement!
+  updateShowerElement(updateShowerElementInput: UpdateShowerElementInput!): ShowerElement!
+  removeShowerElement(id: Int!): ShowerElement!
 }
 
 input NewShowerInput {
   name: String!
   minPrice: Int!
   maxPrice: Int!
+  elements: [CreateShowerElementInput!]
+}
+
+input CreateShowerElementInput {
+  title: String!
+  minValue: Int!
+  maxValue: Int!
+  defaultValue: Int!
+  type: String!
 }
 
 input EditShowerInput {
   name: String
   minPrice: Int
   maxPrice: Int
+  elements: [CreateShowerElementInput!]
+  id: Int!
+}
+
+input UpdateShowerElementInput {
+  title: String
+  minValue: Int
+  maxValue: Int
+  defaultValue: Int
+  type: String
   id: Int!
 }

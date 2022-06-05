@@ -10,20 +10,26 @@ export class ShowersService {
 
   private showers: Shower[] = [];
 
-  create(createShowerInput: NewShowerInput) {
-    const newShower: Shower = {
-      id: (this.showers.length + 1).toString(),
-      ...createShowerInput,
-    };
+  async create(createShowerInput: NewShowerInput) {
+    const { name, minPrice, maxPrice, elements } = createShowerInput;
+    const newShower = await this.prisma.shower.create({
+      data: { name, minPrice, maxPrice },
+    });
 
-    this.showers.push(newShower);
+    elements.forEach(async (element) => {
+      await this.prisma.element.create({
+        data: { ...element, showerId: newShower.id },
+      });
+    });
 
-    return newShower;
+    return await this.prisma.shower.findUnique({
+      where: { id: newShower.id },
+      include: { elements: true },
+    });
   }
 
   async findAll() {
     return await this.prisma.shower.findMany();
-    return this.showers;
   }
 
   findOne(id: number) {
