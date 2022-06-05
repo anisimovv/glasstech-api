@@ -1,5 +1,5 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
-import { Length, MaxLength, Min } from 'class-validator';
+import { Length, Min } from 'class-validator';
 import { CreateShowerElementInput } from 'src/shower-elements/dto/create-shower-element.input';
 
 @InputType()

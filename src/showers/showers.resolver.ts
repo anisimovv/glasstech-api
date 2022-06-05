@@ -3,7 +3,6 @@ import {
   Query,
   Mutation,
   Args,
-  Int,
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
@@ -42,9 +41,9 @@ export class ShowersResolver {
     return this.showersService.update(updateShowerInput.id, updateShowerInput);
   }
 
-  @Mutation(() => Shower)
-  removeShower(@Args('id') id: string) {
-    return this.prisma.shower.delete({ where: { id } });
+  @Mutation(() => Boolean)
+  async removeShower(@Args('id') id: string) {
+    return await this.showersService.remove(id);
   }
 
   @ResolveField()

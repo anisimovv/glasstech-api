@@ -37,7 +37,7 @@ type Query {
 type Mutation {
   createShower(createShowerInput: NewShowerInput!): Shower!
   updateShower(updateShowerInput: EditShowerInput!): Shower!
-  removeShower(id: String!): Shower!
+  removeShower(id: String!): Boolean!
   createShowerElement(createShowerElementInput: CreateShowerElementInput!): ShowerElement!
   updateShowerElement(updateShowerElementInput: UpdateShowerElementInput!): ShowerElement!
   removeShowerElement(id: Int!): ShowerElement!

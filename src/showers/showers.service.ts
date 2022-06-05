@@ -16,11 +16,13 @@ export class ShowersService {
       data: { name, minPrice, maxPrice },
     });
 
-    elements.forEach(async (element) => {
-      await this.prisma.element.create({
+    const elementPromises = elements.map((element) => {
+      return this.prisma.element.create({
         data: { ...element, showerId: newShower.id },
       });
     });
+
+    await Promise.all(elementPromises);
 
     return await this.prisma.shower.findUnique({
       where: { id: newShower.id },
@@ -40,7 +42,10 @@ export class ShowersService {
     return `This action updates a #${id} shower`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} shower`;
+  async remove(id: string) {
+    await this.prisma.shower.delete({ where: { id } });
+    await this.prisma.element.deleteMany({ where: { showerId: null } });
+
+    return true;
   }
 }
