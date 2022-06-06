@@ -14,6 +14,9 @@ import { NewShowerInput } from './dto/new-shower.input';
 import { EditShowerInput } from './dto/edit-shower.input';
 
 import { Shower } from './entities/shower.entity';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
+
 @Resolver(() => Shower)
 export class ShowersResolver {
   constructor(
@@ -42,6 +45,7 @@ export class ShowersResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(GqlAuthGuard)
   removeShower(@Args('id') id: string) {
     return this.showersService.remove(id);
   }

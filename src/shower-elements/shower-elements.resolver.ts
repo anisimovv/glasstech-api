@@ -1,11 +1,4 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Int,
-  ResolveField,
-} from '@nestjs/graphql';
+import { Resolver, Mutation, Args, ResolveField } from '@nestjs/graphql';
 import { ShowerElementsService } from './shower-elements.service';
 import { ShowerElement } from './entities/shower-element.entity';
 import { CreateShowerElementInput } from './dto/create-shower-element.input';
@@ -46,7 +39,6 @@ export class ShowerElementsResolver {
   @ResolveField()
   // TODO: resolve type issues
   shower(showerElement: any) {
-    console.log(showerElement.showerId);
     const { showerId } = showerElement;
     return this.showersService.findOne(showerId);
   }

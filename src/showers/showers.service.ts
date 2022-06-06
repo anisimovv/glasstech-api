@@ -5,12 +5,9 @@ import { PrismaService } from 'src/prisma.service';
 import { NewShowerInput } from './dto/new-shower.input';
 import { EditShowerInput } from './dto/edit-shower.input';
 
-import { Shower } from './entities/shower.entity';
 @Injectable()
 export class ShowersService {
   constructor(private prisma: PrismaService) {}
-
-  private showers: Shower[] = [];
 
   async create(createShowerInput: NewShowerInput) {
     const { name, minPrice, maxPrice, elements } = createShowerInput;
