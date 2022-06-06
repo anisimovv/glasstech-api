@@ -23,7 +23,7 @@ export class AuthService {
     return passwordIsValid ? user : null;
   }
 
-  login(user: User): { access_token: string } {
+  login(user: User) {
     const payload = {
       email: user.email,
       sub: user.userId,
@@ -31,6 +31,7 @@ export class AuthService {
 
     return {
       access_token: this.jwtService.sign(payload),
+      user,
     };
   }
 

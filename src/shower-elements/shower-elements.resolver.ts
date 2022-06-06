@@ -4,6 +4,8 @@ import { ShowerElement } from './entities/shower-element.entity';
 import { CreateShowerElementInput } from './dto/create-shower-element.input';
 import { UpdateShowerElementInput } from './dto/update-shower-element.input';
 import { ShowersService } from 'src/showers/showers.service';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Resolver(() => ShowerElement)
 export class ShowerElementsResolver {
@@ -13,6 +15,7 @@ export class ShowerElementsResolver {
   ) {}
 
   @Mutation(() => ShowerElement)
+  @UseGuards(JwtAuthGuard)
   createShowerElement(
     @Args('createShowerElementInput')
     createShowerElementInput: CreateShowerElementInput,
@@ -21,6 +24,7 @@ export class ShowerElementsResolver {
   }
 
   @Mutation(() => ShowerElement)
+  @UseGuards(JwtAuthGuard)
   updateShowerElement(
     @Args('updateShowerElementInput')
     updateShowerElementInput: UpdateShowerElementInput,
@@ -32,6 +36,7 @@ export class ShowerElementsResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(JwtAuthGuard)
   removeShowerElement(@Args('id') id: string) {
     return this.showerElementsService.remove(id);
   }
