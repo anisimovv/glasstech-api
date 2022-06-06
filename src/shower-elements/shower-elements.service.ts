@@ -11,19 +11,24 @@ export class ShowerElementsService {
     return await this.prisma.element.create({ data: createShowerElementInput });
   }
 
-  findAll(args?) {
+  // TODO: resolve type issues
+  findAll(args?: any) {
     return this.prisma.element.findMany({ where: args });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} showerElement`;
+  async update(id: string, updateShowerElementInput: UpdateShowerElementInput) {
+    return await this.prisma.element.update({
+      where: { id },
+      data: updateShowerElementInput,
+    });
   }
 
-  update(id: number, updateShowerElementInput: UpdateShowerElementInput) {
-    return `This action updates a #${id} showerElement`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} showerElement`;
+  async remove(id: string) {
+    try {
+      await this.prisma.element.delete({ where: { id } });
+    } catch {
+      return false;
+    }
+    return true;
   }
 }

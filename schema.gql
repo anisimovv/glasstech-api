@@ -30,8 +30,6 @@ scalar DateTime
 type Query {
   showers: [Shower!]!
   shower(id: String!): Shower!
-  showerElements: [ShowerElement!]!
-  showerElement(id: Int!): ShowerElement!
 }
 
 type Mutation {
@@ -40,7 +38,7 @@ type Mutation {
   removeShower(id: String!): Boolean!
   createShowerElement(createShowerElementInput: CreateShowerElementInput!): ShowerElement!
   updateShowerElement(updateShowerElementInput: UpdateShowerElementInput!): ShowerElement!
-  removeShowerElement(id: Int!): ShowerElement!
+  removeShowerElement(id: String!): Boolean!
 }
 
 input NewShowerInput {
@@ -75,11 +73,10 @@ input CreateShowerElementInput {
 }
 
 input UpdateShowerElementInput {
-  showerId: String
   title: String
   minValue: Int
   maxValue: Int
   defaultValue: Int
   type: String
-  id: Int!
+  id: String!
 }

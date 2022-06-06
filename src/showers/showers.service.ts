@@ -47,8 +47,12 @@ export class ShowersService {
   }
 
   async remove(id: string) {
-    await this.prisma.shower.delete({ where: { id } });
-    await this.prisma.element.deleteMany({ where: { showerId: null } });
+    try {
+      await this.prisma.shower.delete({ where: { id } });
+      await this.prisma.element.deleteMany({ where: { showerId: null } });
+    } catch {
+      return false;
+    }
 
     return true;
   }

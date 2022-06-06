@@ -1,10 +1,10 @@
 import { CreateShowerElementInput } from './create-shower-element.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { InputType, Field, PartialType, OmitType } from '@nestjs/graphql';
 
 @InputType()
 export class UpdateShowerElementInput extends PartialType(
-  CreateShowerElementInput,
+  OmitType(CreateShowerElementInput, ['showerId']),
 ) {
-  @Field(() => Int)
-  id: number;
+  @Field()
+  id: string;
 }

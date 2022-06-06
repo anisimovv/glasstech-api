@@ -32,7 +32,7 @@ export class ShowersResolver {
   }
 
   @Query(() => Shower, { name: 'shower' })
-  indOne(@Args('id') id: string) {
+  findOne(@Args('id') id: string) {
     return this.showersService.findOne(id);
   }
 

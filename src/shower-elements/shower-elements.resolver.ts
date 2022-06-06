@@ -27,16 +27,6 @@ export class ShowerElementsResolver {
     return this.showerElementsService.create(createShowerElementInput);
   }
 
-  @Query(() => [ShowerElement], { name: 'showerElements' })
-  findAll() {
-    return this.showerElementsService.findAll();
-  }
-
-  @Query(() => ShowerElement, { name: 'showerElement' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.showerElementsService.findOne(id);
-  }
-
   @Mutation(() => ShowerElement)
   updateShowerElement(
     @Args('updateShowerElementInput')
@@ -48,14 +38,14 @@ export class ShowerElementsResolver {
     );
   }
 
-  @Mutation(() => ShowerElement)
-  removeShowerElement(@Args('id', { type: () => Int }) id: number) {
+  @Mutation(() => Boolean)
+  removeShowerElement(@Args('id') id: string) {
     return this.showerElementsService.remove(id);
   }
 
   @ResolveField()
   // TODO: resolve type issues
-  shower(showerElement) {
+  shower(showerElement: any) {
     console.log(showerElement.showerId);
     const { showerId } = showerElement;
     return this.showersService.findOne(showerId);
