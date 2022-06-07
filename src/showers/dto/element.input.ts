@@ -1,10 +1,8 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
+import { ElementType } from '../entities/element-type.enum';
 
 @InputType()
-export class CreateShowerElementInput {
-  @Field()
-  showerId: string;
-
+export class ElementInput {
   @Field()
   title: string;
 
@@ -18,5 +16,5 @@ export class CreateShowerElementInput {
   defaultValue: number;
 
   @Field()
-  type: string;
+  type: ElementType;
 }

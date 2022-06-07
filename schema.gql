@@ -2,14 +2,24 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type ShowerElement {
+type Binding {
   id: ID!
-  shower: Shower!
   title: String!
-  minValue: Int!
+  price: Int!
+}
+
+type Element {
+  id: ID!
+  title: String!
   maxValue: Int!
+  minValue: Int!
   defaultValue: Int!
-  type: String!
+  type: ElementType!
+}
+
+enum ElementType {
+  WIDTH
+  HEIGHT
 }
 
 type Shower {
@@ -17,7 +27,8 @@ type Shower {
   name: String!
   minPrice: Int!
   maxPrice: Int!
-  elements: [ShowerElement!]
+  elements: [Element!]!
+  bindings: [Binding!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -26,6 +37,10 @@ type Shower {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type DeleteResponse {
+  id: ID!
+}
 
 type UserNoPassword {
   userId: ID!
@@ -54,10 +69,11 @@ type Query {
 type Mutation {
   createShower(createShowerInput: NewShowerInput!): Shower!
   updateShower(updateShowerInput: EditShowerInput!): Shower!
-  removeShower(id: String!): Boolean!
-  createShowerElement(createShowerElementInput: CreateShowerElementInput!): ShowerElement!
-  updateShowerElement(updateShowerElementInput: UpdateShowerElementInput!): ShowerElement!
-  removeShowerElement(id: String!): Boolean!
+  removeShower(id: String!): DeleteResponse!
+  createShowerElement(newElementInput: NewElementInput!): Element!
+  removeShowerElement(id: String!): DeleteResponse!
+  createShowerBinding(newBindingInput: NewBindingInput!): Binding!
+  removeShowerBinding(id: String!): DeleteResponse!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   signUp(loginUserInput: LoginUserInput!): SignUpResponse!
 }
@@ -66,40 +82,44 @@ input NewShowerInput {
   name: String!
   minPrice: Int!
   maxPrice: Int!
-  elements: [CrateShowerElementWithoutShowerId!]
+  elements: [ElementInput!]
+  bindings: [BindingInput!]
 }
 
-input CrateShowerElementWithoutShowerId {
+input ElementInput {
   title: String!
   minValue: Int!
   maxValue: Int!
   defaultValue: Int!
   type: String!
+}
+
+input BindingInput {
+  title: String!
+  price: Int!
 }
 
 input EditShowerInput {
   name: String
   minPrice: Int
   maxPrice: Int
+  bindings: [BindingInput!]
   id: String!
 }
 
-input CreateShowerElementInput {
-  showerId: String!
+input NewElementInput {
   title: String!
   minValue: Int!
   maxValue: Int!
   defaultValue: Int!
   type: String!
+  showerId: String!
 }
 
-input UpdateShowerElementInput {
-  title: String
-  minValue: Int
-  maxValue: Int
-  defaultValue: Int
-  type: String
-  id: String!
+input NewBindingInput {
+  title: String!
+  price: Int!
+  showerId: String!
 }
 
 input LoginUserInput {

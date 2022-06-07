@@ -1,5 +1,6 @@
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
-import { ShowerElement } from 'src/shower-elements/entities/shower-element.entity';
+import { Binding } from './binding.entity';
+import { Element } from './element.entity';
 
 @ObjectType()
 export class Shower {
@@ -15,8 +16,11 @@ export class Shower {
   @Field(() => Int)
   maxPrice: number;
 
-  @Field(() => [ShowerElement], { nullable: true })
-  elements: [ShowerElement];
+  @Field(() => [Element])
+  elements: [Element];
+
+  @Field(() => [Binding])
+  bindings: [Binding];
 
   @Field(() => Date)
   createdAt: Date;

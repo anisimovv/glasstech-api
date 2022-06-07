@@ -1,5 +1,5 @@
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -16,16 +16,17 @@ model User {
 }
 
 model Shower {
-  id        String    @id @default(uuid())
+  id        String          @id @default(uuid())
   name      String
   minPrice  Int
   maxPrice  Int
-  elements  Element[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  elements  ShowerElement[]
+  bindings  ShowerBinding[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 }
 
-model Element {
+model ShowerElement {
   id           String   @id @default(uuid())
   title        String
   minValue     Int
@@ -46,10 +47,12 @@ model Glass {
   updatedAt DateTime @updatedAt
 }
 
-model Binding {
+model ShowerBinding {
   id        String   @id @default(uuid())
-  name      String
+  title     String
   price     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Shower    Shower?  @relation(fields: [showerId], references: [id])
+  showerId  String?
 }

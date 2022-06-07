@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaService } from './prisma.service';
 import { ShowersModule } from './showers/showers.module';
-import { ShowerElementsModule } from './shower-elements/shower-elements.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 
@@ -14,7 +13,6 @@ import { UsersModule } from './users/users.module';
       autoSchemaFile: 'schema.gql',
       driver: ApolloDriver,
     }),
-    ShowerElementsModule,
     AuthModule,
     UsersModule,
   ],

@@ -4,53 +4,81 @@ import { PrismaService } from 'src/prisma.service';
 
 import { NewShowerInput } from './dto/new-shower.input';
 import { EditShowerInput } from './dto/edit-shower.input';
+import { NewElementInput } from './dto/new-element.input';
+import { NewBindingInput } from './dto/new-binding.input';
 
 @Injectable()
 export class ShowersService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createShowerInput: NewShowerInput) {
-    const { name, minPrice, maxPrice, elements } = createShowerInput;
-    const newShower = await this.prisma.shower.create({
-      data: { name, minPrice, maxPrice },
-    });
+  async createShower(newShowerInput: NewShowerInput) {
+    const { elements, bindings, ...shower } = newShowerInput;
 
-    const elementPromises = elements.map((element) => {
-      return this.prisma.element.create({
-        data: { ...element, showerId: newShower.id },
-      });
-    });
-
-    await Promise.all(elementPromises);
-
-    return await this.prisma.shower.findUnique({
-      where: { id: newShower.id },
+    return await this.prisma.shower.create({
+      data: {
+        ...shower,
+        elements: {
+          create: elements,
+        },
+        bindings: {
+          create: bindings,
+        },
+      },
     });
   }
 
-  async findAll() {
+  async findShowers() {
     return await this.prisma.shower.findMany();
   }
 
-  async findOne(id: string) {
+  async findShower(id: string) {
     return await this.prisma.shower.findUnique({ where: { id } });
   }
 
-  async update(id: string, updateShowerInput: EditShowerInput) {
+  async updateShower(id: string, updateShowerInput: EditShowerInput) {
     return await this.prisma.shower.update({
-      where: { id: id },
-      data: { ...updateShowerInput },
+      where: { id },
+      data: updateShowerInput,
     });
   }
 
-  async remove(id: string) {
-    try {
-      await this.prisma.shower.delete({ where: { id } });
-      await this.prisma.element.deleteMany({ where: { showerId: null } });
-    } catch {
-      return false;
-    }
+  async removeShower(id: string) {
+    await this.prisma.shower.delete({ where: { id } });
 
-    return true;
+    return { id };
+  }
+
+  async findElements(showerId: string) {
+    return await this.prisma.showerElement.findMany({
+      where: { showerId },
+    });
+  }
+
+  async createElement(newElementInput: NewElementInput) {
+    return await this.prisma.showerElement.create({
+      data: newElementInput,
+    });
+  }
+
+  async removeElement(id: string) {
+    await this.prisma.showerElement.delete({ where: { id } });
+    return { id };
+  }
+
+  async findBindings(showerId: string) {
+    return await this.prisma.showerBinding.findMany({
+      where: { showerId },
+    });
+  }
+
+  async createBinding(newBindingInput: NewBindingInput) {
+    return await this.prisma.showerBinding.create({
+      data: newBindingInput,
+    });
+  }
+
+  async removeBinding(id: string) {
+    await this.prisma.showerBinding.delete({ where: { id } });
+    return { id };
   }
 }
