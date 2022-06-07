@@ -19,4 +19,9 @@ export class AuthResolver {
   ) {
     return this.authService.login(user);
   }
+
+  @Mutation(() => User)
+  signUp(@Args('loginUserInput') loginUserInput: LoginUserInput) {
+    return this.authService.signUp(loginUserInput);
+  }
 }

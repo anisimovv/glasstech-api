@@ -3,6 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/users/enteties/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { jwtSecret } from './constants';
+import { LoginUserInput } from './dto/login-user.input';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -11,16 +13,25 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  validate(email: string, password: string): User | null {
+  async validate(email: string, password: string): Promise<User> {
     const user = this.usersService.getUserByEmail(email);
 
-    if (!user) {
-      return null;
+    const valid = await bcrypt.compare(password, user?.password);
+
+    if (user && valid) {
+      const { password, ...result } = user;
+      return result;
     }
 
-    const passwordIsValid = password === user.password;
+    return null;
+  }
 
-    return passwordIsValid ? user : null;
+  verify(token: string): User {
+    const decoded = this.jwtService.verify(token, { secret: jwtSecret });
+
+    const user = this.usersService.getUserByEmail(decoded.email);
+
+    return user;
   }
 
   login(user: User) {
@@ -35,11 +46,15 @@ export class AuthService {
     };
   }
 
-  verify(token: string): User {
-    const decoded = this.jwtService.verify(token, { secret: jwtSecret });
+  async signUp(loginUserInput: LoginUserInput) {
+    const user = this.usersService.getUserByEmail(loginUserInput.email);
 
-    const user = this.usersService.getUserByEmail(decoded.email);
+    if (user) {
+      throw new Error('User already exists');
+    }
 
-    return user;
+    const password = await bcrypt.hash(loginUserInput.password, 10);
+
+    return this.usersService.create({ ...loginUserInput, password });
   }
 }
