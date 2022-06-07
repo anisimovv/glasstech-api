@@ -27,15 +27,23 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type User {
+type UserNoPassword {
   userId: ID!
   email: String!
-  password: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type LoginResponse {
   access_token: String!
-  user: User!
+  user: UserNoPassword!
+}
+
+type SignUpResponse {
+  userId: ID!
+  email: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Query {
@@ -51,7 +59,7 @@ type Mutation {
   updateShowerElement(updateShowerElementInput: UpdateShowerElementInput!): ShowerElement!
   removeShowerElement(id: String!): Boolean!
   login(loginUserInput: LoginUserInput!): LoginResponse!
-  signUp(loginUserInput: LoginUserInput!): User!
+  signUp(loginUserInput: LoginUserInput!): SignUpResponse!
 }
 
 input NewShowerInput {

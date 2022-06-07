@@ -14,24 +14,26 @@ export class AuthService {
   ) {}
 
   async validate(email: string, password: string): Promise<User> {
-    const user = this.usersService.getUserByEmail(email);
+    const user = await this.usersService.getUserByEmail(email);
 
     const valid = await bcrypt.compare(password, user?.password);
 
     if (user && valid) {
       const { password, ...result } = user;
+
       return result;
     }
 
     return null;
   }
 
-  verify(token: string): User {
+  async verify(token: string) {
     const decoded = this.jwtService.verify(token, { secret: jwtSecret });
+    const user = await this.usersService.getUserByEmail(decoded.email);
 
-    const user = this.usersService.getUserByEmail(decoded.email);
+    const { password, ...result } = user;
 
-    return user;
+    return result;
   }
 
   login(user: User) {
@@ -47,12 +49,6 @@ export class AuthService {
   }
 
   async signUp(loginUserInput: LoginUserInput) {
-    const user = this.usersService.getUserByEmail(loginUserInput.email);
-
-    if (user) {
-      throw new Error('User already exists');
-    }
-
     const password = await bcrypt.hash(loginUserInput.password, 10);
 
     return this.usersService.create({ ...loginUserInput, password });

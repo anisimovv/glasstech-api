@@ -1,11 +1,14 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType, OmitType } from '@nestjs/graphql';
 import { User } from 'src/users/enteties/user.entity';
+
+@ObjectType()
+class UserNoPassword extends OmitType(User, ['password']) {}
 
 @ObjectType()
 export class LoginResponse {
   @Field()
   access_token: string;
 
-  @Field(() => User)
-  user: User;
+  @Field(() => UserNoPassword)
+  user: UserNoPassword;
 }
