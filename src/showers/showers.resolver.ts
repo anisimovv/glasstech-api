@@ -15,7 +15,6 @@ import { EditShowerInput } from './dto/edit-shower.input';
 
 import { Shower } from './entities/shower.entity';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Resolver(() => Shower)
