@@ -5,6 +5,7 @@ import { PrismaService } from './prisma.service';
 import { ShowersModule } from './showers/showers.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { GlassModule } from './glass/glass.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UsersModule } from './users/users.module';
     }),
     AuthModule,
     UsersModule,
+    GlassModule,
   ],
   providers: [PrismaService],
   controllers: [],

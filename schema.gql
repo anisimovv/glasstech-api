@@ -38,7 +38,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type DeleteResponse {
+type DeleteShowerResponse {
   id: ID!
 }
 
@@ -61,21 +61,35 @@ type SignUpResponse {
   updatedAt: DateTime!
 }
 
+type Glass {
+  id: ID!
+  name: String!
+  price: Int!
+}
+
+type DeleteGlassResponse {
+  id: String!
+}
+
 type Query {
   showers: [Shower!]!
   shower(id: String!): Shower!
+  glass: [Glass!]!
 }
 
 type Mutation {
   createShower(createShowerInput: NewShowerInput!): Shower!
   updateShower(updateShowerInput: EditShowerInput!): Shower!
-  removeShower(id: String!): DeleteResponse!
+  removeShower(id: String!): DeleteShowerResponse!
   createShowerElement(newElementInput: NewElementInput!): Element!
-  removeShowerElement(id: String!): DeleteResponse!
+  removeShowerElement(id: String!): DeleteShowerResponse!
   createShowerBinding(newBindingInput: NewBindingInput!): Binding!
-  removeShowerBinding(id: String!): DeleteResponse!
+  removeShowerBinding(id: String!): DeleteShowerResponse!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   signUp(loginUserInput: LoginUserInput!): SignUpResponse!
+  createGlass(createGlassInput: CreateGlassInput!): Glass!
+  updateGlass(updateGlassInput: UpdateGlassInput!): Glass!
+  removeGlass(id: String!): DeleteGlassResponse!
 }
 
 input NewShowerInput {
@@ -125,4 +139,15 @@ input NewBindingInput {
 input LoginUserInput {
   email: String!
   password: String!
+}
+
+input CreateGlassInput {
+  name: String!
+  price: Int!
+}
+
+input UpdateGlassInput {
+  name: String
+  price: Int
+  id: String!
 }

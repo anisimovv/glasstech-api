@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class DeleteResponse {
+export class DeleteShowerResponse {
   @Field(() => ID)
   id: string;
 }

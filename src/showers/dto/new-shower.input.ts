@@ -1,5 +1,4 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
-import { Length, Min } from 'class-validator';
 import { BindingInput } from './binding.input';
 import { ElementInput } from './element.input';
 
