@@ -13,6 +13,10 @@ import { GlassModule } from './glass/glass.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       autoSchemaFile: 'schema.gql',
       driver: ApolloDriver,
+      cors: {
+        origin: 'http://localhost:3000',
+        credentials: true,
+      },
     }),
     AuthModule,
     UsersModule,
