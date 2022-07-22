@@ -16,7 +16,7 @@ import { GlassModule } from './glass/glass.module';
       autoSchemaFile: 'schema.gql',
       driver: ApolloDriver,
       cors: {
-        origin: 'http://localhost:3000',
+        origin: ['http://localhost:3000', /\.anisimovv.com\.com$/],
         credentials: true,
       },
     }),
