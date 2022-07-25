@@ -22,6 +22,7 @@ model Shower {
   maxPrice  Int
   elements  ShowerElement[]
   bindings  ShowerBinding[]
+  image     String?          
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
 }

@@ -13,6 +13,9 @@ export class NewShowerInput {
   @Field(() => Int)
   maxPrice: number;
 
+  @Field({ nullable: true })
+  image: string;
+
   @Field(() => [ElementInput], { nullable: true })
   elements?: [ElementInput];
 

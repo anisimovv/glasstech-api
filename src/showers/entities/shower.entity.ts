@@ -16,6 +16,9 @@ export class Shower {
   @Field(() => Int)
   maxPrice: number;
 
+  @Field({ nullable: true })
+  image: string;
+
   @Field(() => [Element])
   elements: [Element];
 

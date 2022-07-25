@@ -27,6 +27,7 @@ type Shower {
   name: String!
   minPrice: Int!
   maxPrice: Int!
+  image: String
   elements: [Element!]!
   bindings: [Binding!]!
   createdAt: DateTime!
@@ -96,6 +97,7 @@ input NewShowerInput {
   name: String!
   minPrice: Int!
   maxPrice: Int!
+  image: String
   elements: [ElementInput!]
   bindings: [BindingInput!]
 }
@@ -117,6 +119,7 @@ input EditShowerInput {
   name: String
   minPrice: Int
   maxPrice: Int
+  image: String
   bindings: [BindingInput!]
   id: String!
 }
